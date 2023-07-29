@@ -9,7 +9,7 @@ Background::Background(int windowHeight, int windowWidth, std::string filename, 
 
 	this->windowHeight = windowHeight;
 	this->windowWidth = windowWidth;
-	std::cout << "WOW AGAIN" << std::endl;
+
 	this->pause = false;
 
 	this->speed = BG_SPEED;
