@@ -83,7 +83,7 @@ void Bird::update(float deltaTime, sf::RenderWindow &window) {
 
 }
 
-bool Bird::collisionFloor(sf::RectangleShape *background) {
+bool Bird::collisionFloor(sf::Sprite *background) {
 	sf::FloatRect birdBounds = this->bird.getGlobalBounds();
 
 	for (int i = 0; i < 2; i++) {

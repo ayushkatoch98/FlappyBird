@@ -16,7 +16,7 @@ private:
 	int activeBg;
 	sf::Texture bgTex;
 
-	sf::RectangleShape bg[2];
+	sf::Sprite bg[3];
 
 public:
 
@@ -24,7 +24,7 @@ public:
 	sf::Texture loadTexture(std::string fileName);
 	void update(float deltaTime, sf::RenderWindow& window);
 
-	sf::RectangleShape* getBg() { return this->bg; }
+	sf::Sprite* getBg() { return this->bg; }
 
 	void setPause(bool pause) { this->pause = pause; }
 

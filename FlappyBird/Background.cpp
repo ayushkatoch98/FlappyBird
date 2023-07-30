@@ -2,8 +2,8 @@
 #include <iostream>
 
 
-
-#define BG_SPEED 100.f;
+#define PRE_LOAD_BG 3
+#define BG_SPEED 150.0f
 
 Background::Background(int windowHeight, int windowWidth, std::string filename, float screenPercent, bool positionTop) {
 
@@ -17,17 +17,20 @@ Background::Background(int windowHeight, int windowWidth, std::string filename, 
 	this->bgTex = this->loadTexture(filename);
 
 
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < PRE_LOAD_BG; i++) {
 
-		this->bg[i] = sf::RectangleShape();
-		this->bg[i].setTexture(&this->bgTex);
-		this->bg[i].setSize(sf::Vector2f(windowWidth, ((screenPercent * windowHeight) / 100)));
+		this->bg[i] = sf::Sprite();
+		this->bg[i].setTexture(this->bgTex);
+
+
+		this->bg[i].setScale(windowWidth / (float) this->bg[i].getTexture()->getSize().x, ((screenPercent * windowHeight) / 100) / this->bg[i].getTexture()->getSize().y);
 
 		if(positionTop)
 			this->bg[i].setPosition(sf::Vector2f(windowWidth * i, 0.f));
 		else {
 			float h = ((100 - screenPercent) * windowHeight) / 100;
 			this->bg[i].setPosition(sf::Vector2f(windowWidth * i, h));
+
 		}
 
 	}
@@ -49,6 +52,7 @@ void Background::render(sf::RenderWindow& window) {
 
 	window.draw(this->bg[0]);
 	window.draw(this->bg[1]);
+	window.draw(this->bg[2]);
 
 }
 
@@ -60,15 +64,20 @@ void Background::update(float deltaTime, sf::RenderWindow& window) {
 		this->render(window);
 		return;
 	}
-	for (int i = 0; i < 2; i++) {
+	for (int i = PRE_LOAD_BG - 1; i >= 0; i--) {
 
-		float newX = this->bg[i].getPosition().x - (this->speed * deltaTime);
-
-		if (newX + this->bg[i].getSize().x + 2.f <= 0.f) {
-
-			this->bg[i].setPosition(windowWidth - 2.0f, this->bg[i].getPosition().y);
+		// reset bg position
+		if (this->bg[i].getPosition().x + this->bg[i].getGlobalBounds().width <= 0.f) {
+			int x = i - 1;
+			if (x < 0) {
+				x = PRE_LOAD_BG - 1;
+			}
+			this->bg[i].setPosition(this->bg[x].getPosition().x + this->bg[x].getGlobalBounds().width, this->bg[i].getPosition().y);
 		}
-		else this->bg[i].setPosition(newX, this->bg[i].getPosition().y);
+		// move 
+		
+		float newX = -(this->speed * deltaTime);
+		this->bg[i].move(newX, 0.f);
 	}
 
 		

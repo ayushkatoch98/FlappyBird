@@ -30,7 +30,7 @@ public:
 
 	void update(float deltaTime, sf::RenderWindow& window);
 
-	bool collisionFloor(sf::RectangleShape* background);
+	bool collisionFloor(sf::Sprite* background);
 	bool collisionObstacles(PipeSpawner::Obstacle obstacle);
 
 	void jump();
